@@ -1,0 +1,153 @@
+#pragma version 10
+
+// Escrow Claim Link Contract - Approval Program
+// Simple but functional escrow that can receive and send ALGO
+
+// Check if this is app creation
+txn ApplicationID
+int 0
+==
+bnz handle_creation
+
+// Route based on OnCompletion
+txn OnCompletion
+int NoOp
+==
+bnz handle_noop
+
+// Reject all other OnCompletion types
+int 0
+return
+
+handle_creation:
+    // Initialize claim counter
+    byte "claim_count"
+    int 0
+    app_global_put
+    int 1
+    return
+
+handle_noop:
+    // Check the app call method
+    txn NumAppArgs
+    int 0
+    ==
+    bnz fund_escrow
+    
+    // Get method selector
+    txna ApplicationArgs 0
+    
+    // Check for "claim" method
+    byte "claim"
+    ==
+    bnz handle_claim
+    
+    // Check for "cancel" method  
+    byte "cancel"
+    ==
+    bnz handle_cancel
+    
+    // Default: allow funding
+    b fund_escrow
+
+fund_escrow:
+    // Allow funding the escrow
+    // Check that a payment transaction is in the group
+    global GroupSize
+    int 2
+    ==
+    bnz check_payment
+    
+    // If single transaction, just accept (for initial funding)
+    int 1
+    return
+    
+check_payment:
+    // Check that first transaction is a payment to this contract
+    gtxn 0 TypeEnum
+    int pay
+    ==
+    assert
+    
+    gtxn 0 Receiver
+    global CurrentApplicationAddress
+    ==
+    assert
+    
+    // Increment claim counter
+    byte "claim_count"
+    byte "claim_count"
+    app_global_get
+    int 1
+    +
+    app_global_put
+    
+    int 1
+    return
+
+handle_claim:
+    // Send funds from contract to caller
+    // Get amount to send from arg 1
+    txna ApplicationArgs 1
+    btoi
+    store 0 // Store amount in scratch space
+    
+    // Create inner transaction to send ALGO
+    itxn_begin
+    
+    int pay
+    itxn_field TypeEnum
+    
+    txn Sender
+    itxn_field Receiver
+    
+    load 0
+    itxn_field Amount
+    
+    int 0
+    itxn_field Fee
+    
+    itxn_submit
+    
+    int 1
+    return
+
+handle_cancel:
+    // Refund to the original sender
+    // Get amount from arg 1
+    txna ApplicationArgs 1
+    btoi
+    store 0
+    
+    // Get original sender from arg 2
+    txna ApplicationArgs 2
+    store 1
+    
+    // Verify caller is the original sender
+    txn Sender
+    load 1
+    ==
+    assert
+    
+    // Create inner transaction to refund
+    itxn_begin
+    
+    int pay
+    itxn_field TypeEnum
+    
+    load 1
+    itxn_field Receiver
+    
+    load 0
+    itxn_field Amount
+    
+    int 0
+    itxn_field Fee
+    
+    itxn_submit
+    
+    int 1
+    return
+
+
+
