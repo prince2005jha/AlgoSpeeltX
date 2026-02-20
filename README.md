@@ -14,7 +14,7 @@ The Claim link Function Uses Smart contract escrow which holds the funds sent by
 - Beautiful, modern UI with wallet integration
 - Real-time payment tracking and history
 
-🌐 **Live Application:** [https://algosplit.vercel.app/](https://algosplit.vercel.app/)
+🌐 **Live Application:** ([https://algosplit.vercel.app/](https://algo-speelt-x.vercel.app/))
 
 ## Features
 
