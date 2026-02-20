@@ -14,8 +14,6 @@ The Claim link Function Uses Smart contract escrow which holds the funds sent by
 - Beautiful, modern UI with wallet integration
 - Real-time payment tracking and history
 
-🌐 **Live Application:** [https://algosplit.vercel.app/](https://algosplit.vercel.app/)
-
 ## Problem Statement
 
 Traditional payment splitting often involves manual tracking, trust issues, and inconvenience when splitting bills among friends or for group expenses. AlgoSplit solves this by leveraging blockchain technology for secure, trustless, and automated payment distribution.
