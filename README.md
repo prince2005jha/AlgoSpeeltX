@@ -14,7 +14,21 @@ The Claim link Function Uses Smart contract escrow which holds the funds sent by
 - Beautiful, modern UI with wallet integration
 - Real-time payment tracking and history
 
-🌐 **Live Application:** ([https://algosplit.vercel.app/](https://algo-speelt-x.vercel.app/))
+🌐 **Live Application:** [https://algosplit.vercel.app/](https://algosplit.vercel.app/)
+
+## Problem Statement
+
+Traditional payment splitting often involves manual tracking, trust issues, and inconvenience when splitting bills among friends or for group expenses. AlgoSplit solves this by leveraging blockchain technology for secure, trustless, and automated payment distribution.
+
+## LinkedIn Demo Video URL
+
+[Insert LinkedIn video URL here]
+
+## App ID (Testnet) and Testnet Explorer Link
+
+- **App ID:** 749648130
+- **Testnet Explorer (Lora):** [https://lora.algokit.io/testnet/application/749648130](https://lora.algokit.io/testnet/application/749648130)
+- **Testnet Explorer (PeraWallet):** [https://testnet.explorer.perawallet.app/tx/AMZXSKWGQONDSUSTN4M6W6JGTO6KONP2RXE5O7WTKS6OPPHZBZ2Q/](https://testnet.explorer.perawallet.app/tx/AMZXSKWGQONDSUSTN4M6W6JGTO6KONP2RXE5O7WTKS6OPPHZBZ2Q/)
 
 ## Features
 
@@ -162,6 +176,8 @@ VITE_ALGORAND_NETWORK=mainnet
 4. Confirm the transaction in your wallet
 5. Wait for confirmation (usually 4-5 seconds)
 
+*Screenshots illustrating the usage steps will be added here.*
+
 ## 🔗 Deployed Smart Contracts
 
 AlgoSplit uses smart contracts deployed on the Algorand TestNet. After deploying your contracts, you can verify them using [Lora Explorer](https://lora.algokit.io/testnet).
@@ -259,101 +275,37 @@ python deploy.py  # (if available)
 - Duplicate contribution prevention
 - Real-time balance tracking
 
-## 🧠 Architecture & Components
+## � System Architecture
 
-### System Architecture
+AlgoSplit follows a hybrid decentralized architecture:
 
-AlgoSplit follows a **decentralized architecture** with the following components:
+Frontend (React + Vite)  
+↓  
+Smart Contracts (Algorand Blockchain)  
+↓  
+Supabase (Metadata & history storage)
 
-```
-┌─────────────────┐
-│   Frontend      │  React + TypeScript + Vite
-│   (Vercel)      │  └─ Wallet Integration (Pera/Defly/Lute)
-└────────┬────────┘
-         │
-    ┌────┴────┐
-    │         │
-┌───▼───┐ ┌──▼────────┐
-│Algorand│ │ Supabase │
-│Blockchain│ │Database │
-│         │ │          │
-│ Smart  │ │ Payment  │
-│Contracts│ │ History │
-└─────────┘ └──────────┘
-```
+---
 
-### Frontend Components
+## 🛠 Tech Stack
 
-**Tech Stack:**
-- **Framework**: React 18 + TypeScript
-- **Build Tool**: Vite
-- **UI Library**: Tailwind CSS + shadcn/ui components
-- **State Management**: React Context API
-- **Routing**: React Router v6
-- **Wallet Integration**: @txnlab/use-wallet-react
-- **Blockchain SDK**: algosdk (Algorand SDK)
+### Frontend
+- React 18 + TypeScript  
+- Vite  
+- Tailwind CSS + shadcn/ui  
+- React Router v6  
+- Context API  
 
-**Key Components:**
-- `PaymentContext.tsx` - Manages payment splitting logic
-- `ClaimLinkContext.tsx` - Handles escrow claim link functionality
-- `ConnectWallet.tsx` - Wallet connection interface
-- `contractService.ts` - Smart contract interaction layer
-
-### Smart Contracts
-
-**Escrow Claim Link Contract** (`escrow_claim_link.py`):
-- Written in PuyaPy (Algorand Python)
-- Uses box storage for claim link data
-- Methods: `create_claim_link`, `claim`, `cancel`, `get_claim_info`
-- Supports both ALGO and ASA (USDCa) tokens
-
-**Payment Split Contract** (`payment_split.py`):
-- Manages multi-participant payments
-- Tracks contributions and completion status
-- Methods: `create_payment`, `contribute`, `get_payment_info`, `has_contributed`
+### Blockchain
+- Algorand  
+- algosdk  
+- PuyaPy (Smart contracts)  
 
 ### Backend
+- Supabase (PostgreSQL)  
+- Row Level Security (RLS)  
 
-**Supabase (PostgreSQL):**
-- Stores payment metadata and history
-- Row Level Security (RLS) for data protection
-- Real-time subscriptions for live updates
-- Tables: `payments`, `claim_links`, `contributions`
-
-### Project Structure
-
-```
-algo-split-link-main/
-├── src/
-│   ├── components/        # React UI components
-│   │   ├── ui/            # shadcn/ui components
-│   │   ├── ConnectWallet.tsx
-│   │   ├── Features.tsx
-│   │   └── Navbar.tsx
-│   ├── contexts/          # State management
-│   │   ├── PaymentContext.tsx
-│   │   └── ClaimLinkContext.tsx
-│   ├── lib/
-│   │   ├── algorand/      # Blockchain integration
-│   │   │   ├── config.ts
-│   │   │   ├── contractService.ts
-│   │   │   └── simplePayment.ts
-│   │   └── supabase/      # Database integration
-│   │       └── config.ts
-│   └── pages/             # Route pages
-│       ├── Landing.tsx
-│       ├── CreatePayment.tsx
-│       ├── CreateClaimLink.tsx
-│       ├── JoinPayment.tsx
-│       ├── ClaimLinkPage.tsx
-│       └── MyPayments.tsx
-├── contracts/             # Smart contracts
-│   ├── escrow_claim_link.py
-│   ├── payment_split.py
-│   ├── deploy_teal_escrow.py
-│   └── requirements.txt
-└── supabase-schema.sql    # Database schema
-```
+---
 
 ## Security
 
@@ -374,9 +326,24 @@ algo-split-link-main/
 ✅ Wallet disconnection handling  
 ✅ Insufficient balance handling  
 
+## Known Limitations
+
+- The application is currently available only on the Algorand testnet.
+- Only supports ALGO and USDCa tokens.
+- Users must have an Algorand-compatible wallet (Pera, Defly, or Lute).
+- Smart contract interactions may incur minimal transaction fees.
+- Limited to a maximum number of participants per payment link.
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
+
+## Team Members and Roles
+
+- **Prince Kr.Jha:** Blockchain & Smart Contract Development
+- **Priyansh:** Frontend & Wallet Integration
+- **Deepak Singh:** Backend & Database Management
+- **Paras:** Testing, Deployment
 
 ## License
 
@@ -386,7 +353,7 @@ MIT
 
 The frontend is deployed on **Vercel** and accessible at:
 
-**🔗 Live Application:** [https://algosplit.vercel.app/](https://algosplit.vercel.app/)
+**🔗 Live Application:** [https://algo-spleet-x.vercel.app/](https://algo-speelt-x.vercel.app/)
 
 ### Deploying to Vercel
 
